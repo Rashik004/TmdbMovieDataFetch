@@ -18,7 +18,8 @@ namespace ConsoleApplication2.DBHandler
         public IMongoCollection<Movie> Movies;
         public IMongoCollection<MovieGenre> Genres; 
         public IMongoCollection<PersonMovies> People; 
-       
+        public IMongoCollection<FetchStat> FetchStat;
+
         public DbContext()
         {
 
@@ -30,7 +31,9 @@ namespace ConsoleApplication2.DBHandler
             Movies= db.GetCollection<Movie>("Movie");
             Genres = db.GetCollection<MovieGenre>("Genres");
             People = db.GetCollection<PersonMovies>("People");
+            FetchStat = db.GetCollection<FetchStat>("FetchStat");
 
         }
+
     }
 }

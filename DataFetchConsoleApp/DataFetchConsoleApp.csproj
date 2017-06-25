@@ -75,6 +75,7 @@
     <Compile Include="DBHandler\DbContext.cs" />
     <Compile Include="Models\AlternativeTitle.cs" />
     <Compile Include="Models\EmbeddedData\GenreBase.cs" />
+    <Compile Include="Models\FetchStat.cs" />
     <Compile Include="Models\ImageData.cs" />
     <Compile Include="Models\Images.cs" />
     <Compile Include="Models\Keyword.cs" />

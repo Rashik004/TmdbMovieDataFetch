@@ -1,25 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Dynamic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 using ConsoleApplication2.DBHandler;
 using ConsoleApplication2.Models;
 using ConsoleApplication2.Models.OmdbWrapper;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.GridFS;
-using MongoDB.Driver.Linq;
 using TMDbLib.Client;
-using TMDbLib.Objects.Lists;
 using TMDbLib.Objects.Movies;
-using TMDbLib.Objects.Search;
 using Movie = ConsoleApplication2.Models.Movie;
 using Newtonsoft.Json;
 using TMDbLib.Objects.People;
@@ -33,19 +24,20 @@ namespace ConsoleApplication2
         public static string OmdbRequestFormat = "?i={0}&plot={1}&apikey={2}";
         static void Main(string[] args)
         {
-            //FetchImdbData("tt0111161", "6f27242");
-            //return;
-            var tmdbkey= ConfigurationSettings.AppSettings["TmdbKey"];
+          
+            var tmdbkey = ConfigurationSettings.AppSettings["TmdbKey"];
             var client = new TMDbClient(tmdbkey);
 
-            var maxCount = 1000;
+            var maxCount = 30;
             var startTime = DateTime.Now;
             var db = new DbContext();
+            var offsetpageNo = db.FetchStat.Find(a => true).FirstOrDefault().LastFetchedPage;
             var topMovies = new List<Movie>();
             double duration;
             try
             {
-                topMovies = FetchTopMovies(maxCount, client);
+                topMovies = FetchTopMovies(offsetpageNo, maxCount, client);
+                UpdateFetchStat(maxCount);
                 var genres = topMovies.Select(tm => new MovieGenre()
                 {
                     Genres = tm.Genres,
@@ -58,7 +50,7 @@ namespace ConsoleApplication2
                 Console.WriteLine("\n************--------***********\n\n");
 
                 db.Genres.InsertMany(genres);
-                db.Movies.InsertMany(topMovies);
+                //db.Movies.InsertMany(topMovies);
             }
             catch (Exception ex)
             {
@@ -87,16 +79,33 @@ namespace ConsoleApplication2
             Console.ReadKey();
         }
 
+        private static void UpdateFetchStat(int maxCount)
+        {
+            var db=new DbContext();
+            //db.FetchStat.InsertOne(new FetchStat() {LastFetchedPage = 2});
+            var filterBuilder = Builders<FetchStat>.Filter;
+            var filter = filterBuilder.Where(s => true);
+            var update = Builders<FetchStat>.Update.Inc("LastFetchedPage", maxCount);
+            db.FetchStat.FindOneAndUpdate(filter, update);
+        }
+
         private static List<Person> InsertPerson(List<MoviePerson> movieCasts, TMDbClient client, DbContext db)
         {
             var people = new List<Person>();
             int count = 0;
             var a = DateTime.Now;
-            a.ToString();
             try
             {
+                DateTime intervalStart=DateTime.Now;
                 foreach (var movieCast in movieCasts)
                 {
+                    if (count != 0 && count%100 == 0)
+                    {
+                        Console.WriteLine(String.Format("****Time taken to insert last 100 data {0} seconds", DateTime.Now.Subtract(intervalStart).TotalSeconds));
+                        Console.WriteLine(String.Format("****Time taken to insert {0} data {1} seconds",count, DateTime.Now.Subtract(a).TotalSeconds));
+                        intervalStart=DateTime.Now;
+                    }
+                        
                     //var current= db.People.Find(p => p.Id == person.Id).FirstOrDefault();
                     var dbPerson = db.People.Find(p => p.Person.Id == movieCast.PersonId).FirstOrDefault();
                     if (dbPerson == null)
@@ -127,44 +136,21 @@ namespace ConsoleApplication2
             return people;
         }
 
-        private static OmdbMovie FetchOmdbData(string imdbId, string omdbKey)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress= new Uri("http://www.omdbapi.com/");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage res;
-                var requestString = String.Format(OmdbRequestFormat, imdbId, "full", omdbKey);
-                try
-                {
-                    res = client.GetAsync(requestString).Result;
-                }
-                catch (Exception ex)
-                {
 
-                    throw;
-                }
-                if (res.IsSuccessStatusCode)
-                {
-                    var omdbresponse = res.Content.ReadAsStringAsync().Result;
-                    return  JsonConvert.DeserializeObject<OmdbMovie>(omdbresponse);
-
-
-                }
-                return null;
-            }
-        }
-
-        private static List<Movie> FetchTopMovies(int maxCount, TMDbClient client)
+        private static List<Movie> FetchTopMovies(int offsetPage, int totalpageCount, TMDbClient client)
         {
             var totalCount = 0;
-            var lastPage = 1;
+            var currentPageNo = offsetPage+1;
+            var lastPageNo = totalpageCount + offsetPage;
+            //var lastPage = 1;
             var topMovies = new List<Movie>();
 
-            while (totalCount < maxCount)
+            while (currentPageNo <= lastPageNo)
             {
-                var mvList = client.GetMovieTopRatedListAsync(null, lastPage++);
-                Console.WriteLine(String.Format("Fetching data of page no {0}", lastPage-1));
+                var mvList = client.GetMovieTopRatedListAsync(null, currentPageNo++);
+                var currentPage = new List<Movie>();
+
+                Console.WriteLine(String.Format("Fetching data of page no {0}", currentPageNo - 1));
                 if (mvList.Result.Results.Count == 0)
                     break;
                 foreach (var movie in mvList.Result.Results)
@@ -188,16 +174,49 @@ namespace ConsoleApplication2
                         OmdbMovie omdbData = null;
                         var topMovie = ConvertToDbo(moveieDetails, omdbData);
 
-                        topMovies.Add(topMovie);
+                        currentPage.Add(topMovie);
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(String.Format("Exception For movie {0}\n", movie.Title) + ex);
                     }
+
                 }
+                topMovies.AddRange(currentPage);
+                var ctx = new DbContext();
+                ctx.Movies.InsertManyAsync(currentPage);
                 Console.WriteLine("Total Movies Saved {0}", totalCount);
             }
             return topMovies;
+        }
+
+
+        private static OmdbMovie FetchOmdbData(string imdbId, string omdbKey)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://www.omdbapi.com/");
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage res;
+                var requestString = String.Format(OmdbRequestFormat, imdbId, "full", omdbKey);
+                try
+                {
+                    res = client.GetAsync(requestString).Result;
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+                if (res.IsSuccessStatusCode)
+                {
+                    var omdbresponse = res.Content.ReadAsStringAsync().Result;
+                    return JsonConvert.DeserializeObject<OmdbMovie>(omdbresponse);
+
+
+                }
+                return null;
+            }
         }
 
         private string DownloadPoster(string baseUrl, string posterPath)
