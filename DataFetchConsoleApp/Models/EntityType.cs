@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication2.Models
 {
-    public enum PersonGender
+    public enum EntityType
     {
-        Unknown = 0,
-        Female = 1,
-        Male = 2
+        Movie,
+        Person
     }
 }
