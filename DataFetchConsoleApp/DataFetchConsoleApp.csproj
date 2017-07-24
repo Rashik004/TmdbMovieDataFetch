@@ -73,19 +73,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBHandler\DbContext.cs" />
+    <Compile Include="DBHandler\DbContextPrev.cs" />
     <Compile Include="Models\AlternativeTitle.cs" />
+    <Compile Include="Models\Cast.cs" />
+    <Compile Include="Models\Crew.cs" />
+    <Compile Include="Models\DBSchema\Credit.cs" />
+    <Compile Include="Models\DBSchema\FetchLater.cs" />
+    <Compile Include="Models\DBSchema\FetchStat.cs" />
+    <Compile Include="Models\DBSchema\Genre.cs" />
+    <Compile Include="Models\DBSchema\Movie.cs" />
+    <Compile Include="Models\DBSchema\MovieAlternativeTitles.cs" />
+    <Compile Include="Models\DBSchema\MovieGenre.cs" />
+    <Compile Include="Models\DBSchema\PersonMovies.cs" />
     <Compile Include="Models\EmbeddedData\GenreBase.cs" />
+    <Compile Include="Models\EntityType.cs" />
     <Compile Include="Models\FetchStat.cs" />
     <Compile Include="Models\ImageData.cs" />
     <Compile Include="Models\Images.cs" />
     <Compile Include="Models\Keyword.cs" />
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\Person.cs" />
     <Compile Include="Models\PersonMovies.cs" />
     <Compile Include="Models\MoviePerson.cs" />
     <Compile Include="Models\OmdbWrapper\MovieGenre.cs" />
     <Compile Include="Models\OmdbWrapper\OmdbMovie.cs" />
     <Compile Include="Models\OmdbWrapper\OmdbRating.cs" />
-    <Compile Include="Models\PersonGender.cs" />
     <Compile Include="Models\ProductionCompany.cs" />
     <Compile Include="Models\ProductionCountry.cs" />
     <Compile Include="Models\Rating.cs" />

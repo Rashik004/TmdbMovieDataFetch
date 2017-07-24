@@ -15,7 +15,7 @@ namespace ConsoleApplication2.Models
         [BsonId]
         public ObjectId PersonId { get; set; }
 
-        public Person Person { get; set; }
+        public TMDbLib.Objects.People.Person Person { get; set; }
         public List<ObjectId> MovieIds { get; set; }
     }
 }
