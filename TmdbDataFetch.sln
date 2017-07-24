@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataFetchConsoleApp", "DataFetchConsoleApp\DataFetchConsoleApp.csproj", "{BCC38FC1-97FC-47B5-99F2-44FB094335DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B2B.Mddb.DataFetchingService", "B2B.Mddb.DataFetchingService\B2B.Mddb.DataFetchingService.csproj", "{5D460867-A61C-4901-A75D-B84C6950FBBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B2B.Mddb.MddbBaseModel", "B2B.Mddb.MddbBaseModel\B2B.Mddb.MddbBaseModel.csproj", "{2DE416ED-C157-4B7E-A8F1-E0EA7932717A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{BCC38FC1-97FC-47B5-99F2-44FB094335DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCC38FC1-97FC-47B5-99F2-44FB094335DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCC38FC1-97FC-47B5-99F2-44FB094335DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D460867-A61C-4901-A75D-B84C6950FBBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D460867-A61C-4901-A75D-B84C6950FBBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D460867-A61C-4901-A75D-B84C6950FBBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D460867-A61C-4901-A75D-B84C6950FBBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DE416ED-C157-4B7E-A8F1-E0EA7932717A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DE416ED-C157-4B7E-A8F1-E0EA7932717A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DE416ED-C157-4B7E-A8F1-E0EA7932717A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DE416ED-C157-4B7E-A8F1-E0EA7932717A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
