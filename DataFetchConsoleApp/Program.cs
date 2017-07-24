@@ -40,7 +40,7 @@ namespace ConsoleApplication2
         private static void FixDbStructure()
         {
             var dumpCtx = new DbContextPrev();
-            var ctx = new DbContext();
+            var ctx = new MddbBaseModel();
 
             var tmdbkey = ConfigurationSettings.AppSettings["TmdbKey"];
             var client = new TMDbClient(tmdbkey);
@@ -65,7 +65,7 @@ namespace ConsoleApplication2
         private static void GetDataFromDumbDb()
         {
             var dumpCtx=new DbContextPrev();
-            var ctx = new DbContext();
+            var ctx = new MddbBaseModel();
             //var dumpPersonList = dumpCtx.People.Find(p => true).ToList();
             //var dbPersonList = dumpPersonList.Select(ConvertToDbo).ToList();
             //var insert=new List<Models.DBSchema.PersonMovies>();
@@ -114,7 +114,7 @@ namespace ConsoleApplication2
         private static void AddNewMovie(MoviePrev movieDump)
         {
             var movie = ConvertToDbo(movieDump);
-            var ctx = new DbContext();
+            var ctx = new MddbBaseModel();
 
             if (movieDump.Credits!=null)
             {
@@ -128,7 +128,7 @@ namespace ConsoleApplication2
             ctx.Movies.InsertOneAsync(movie);
         }
 
-        private static void InsertCredits(MoviePrev movieDump, DbContext ctx)
+        private static void InsertCredits(MoviePrev movieDump, MddbBaseModel ctx)
         {
             var credit = new Credit()
             {
@@ -142,7 +142,7 @@ namespace ConsoleApplication2
 
         private static Models.Crew ConvertToDbo(Crew arg)
         {
-            var ctx=new DbContext();
+            var ctx=new MddbBaseModel();
             var exsisting = GetExisting(arg.Id, ctx);
 
             return new Models.Crew()
@@ -157,7 +157,7 @@ namespace ConsoleApplication2
 
         private static Models.Cast ConvertToDbo(Cast arg)
         {
-            var ctx = new DbContext();
+            var ctx = new MddbBaseModel();
             var exsisting = GetExisting(arg.Id, ctx);
             return new Models.Cast()
             {
@@ -170,7 +170,7 @@ namespace ConsoleApplication2
             };
         }
 
-        private static Models.DBSchema.PersonMovies GetExisting(int tmdbId, DbContext ctx)
+        private static Models.DBSchema.PersonMovies GetExisting(int tmdbId, MddbBaseModel ctx)
         {
             var exsisting = ctx.People.Find(p => p.TmdbId == tmdbId).FirstOrDefault();
             if (exsisting != null) return exsisting;
@@ -188,7 +188,7 @@ namespace ConsoleApplication2
             return exsisting;
         }
 
-        private static void InsertGenreAndMovieGenre(MoviePrev movieDump, DbContext ctx)
+        private static void InsertGenreAndMovieGenre(MoviePrev movieDump, MddbBaseModel ctx)
         {
             var dbGenres = new List<Genre>();
             foreach (var genre in movieDump.Genres)

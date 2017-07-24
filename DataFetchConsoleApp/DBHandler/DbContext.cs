@@ -12,7 +12,7 @@ using PersonMovies = ConsoleApplication2.Models.PersonMovies;
 
 namespace ConsoleApplication2.DBHandler
 {
-    public class DbContext
+    public class MddbBaseModel
     {
         public IMongoDatabase Database;
         public IMongoCollection<Movie> Movies;
@@ -24,7 +24,7 @@ namespace ConsoleApplication2.DBHandler
         public IMongoCollection<Credit> Credits;
         public IMongoCollection<FetchLater> FetchLater;
 
-        public DbContext()
+        public MddbBaseModel()
         {
             var connectionString = ConfigurationSettings.AppSettings["MongoDBConectionString"];
             var mongoUrl = new MongoUrl(connectionString);

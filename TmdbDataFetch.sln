@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B2B.Mddb.DataFetchingServic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B2B.Mddb.MddbBaseModel", "B2B.Mddb.MddbBaseModel\B2B.Mddb.MddbBaseModel.csproj", "{2DE416ED-C157-4B7E-A8F1-E0EA7932717A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B2B.Mddb.Models", "B2B.Mddb.Models\B2B.Mddb.Models.csproj", "{0BF7F5CD-EA24-4A78-9584-0D195D4809BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{2DE416ED-C157-4B7E-A8F1-E0EA7932717A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DE416ED-C157-4B7E-A8F1-E0EA7932717A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DE416ED-C157-4B7E-A8F1-E0EA7932717A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BF7F5CD-EA24-4A78-9584-0D195D4809BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BF7F5CD-EA24-4A78-9584-0D195D4809BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BF7F5CD-EA24-4A78-9584-0D195D4809BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BF7F5CD-EA24-4A78-9584-0D195D4809BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
