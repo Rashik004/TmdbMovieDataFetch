@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -24,6 +25,8 @@ namespace B2B.Mddb.DataFetchingService
 
         protected override void OnStart(string[] args)
         {
+            var ctx = new MddbBaseModel.MddbBaseModel();
+            Console.ReadKey();
         }
 
         protected override void OnStop()

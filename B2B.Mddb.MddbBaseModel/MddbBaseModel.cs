@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 using B2B.Mddb.Models.Models.DBSchema;
 using MongoDB.Driver;
 using FetchStat = B2B.Mddb.Models.Models.FetchStat;
-using PersonMovies = B2B.Mddb.Models.Models.PersonMovies;
 
-namespace ConsoleApplication2.DBHandler
+namespace B2B.Mddb.MddbBaseModel
 {
     public class MddbBaseModel
     {

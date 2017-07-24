@@ -55,6 +55,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\B2B.Mddb.MddbBaseModel\B2B.Mddb.MddbBaseModel.csproj">
+      <Project>{2de416ed-c157-4b7e-a8f1-e0ea7932717a}</Project>
+      <Name>B2B.Mddb.MddbBaseModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
